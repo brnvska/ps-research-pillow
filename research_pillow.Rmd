@@ -1,0 +1,51 @@
+---
+title: "R Notebook"
+output: html_notebook
+---
+
+```{r}
+pillow <- read.csv(file = 'C:/Users/dimit/Downloads/data_for_research.csv')
+pillow
+```
+
+```{r}
+
+plotting <- function(cur_dat, bin){
+  xrange = c(min(cur_dat),max(cur_dat))
+  hist(cur_dat,
+       probability = T, 
+       breaks = bin, 
+       xlim = xrange,
+       main = "Sleeping hour",
+       col = "lightblue");
+  lines(density(cur_dat),xlim=xrange, col = "blue")
+  x <- seq(min(cur_dat),max(cur_dat), by=.01)
+}
+
+```
+
+```{r}
+# plotting(pillow$sr, 20)
+summary(pillow$sr)
+```
+
+```{r}
+# plotting(pillow$hr, 20)
+summary(pillow$hr)
+```
+
+```{r}
+# plotting(pillow$sh, 20)
+summary(pillow$sh)
+
+
+```
+
+```{r}
+# plotting(pillow$sl, 5)
+summary(pillow$sl)
+```
+
+```{r}
+filter(pillow)
+```
