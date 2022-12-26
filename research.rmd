@@ -1,0 +1,28 @@
+---
+title: 'Probability and Statistics.'
+authors: Hrebeniuk Dmytro ,Baranovska Tetiana, Lakoma Nadiia
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+### Student\`s research "Human Stress Detection in and through Sleep by monitoring physiological data."
+
+Analysing data from
+<https://www.kaggle.com/datasets/laavanya/human-stress-detection-in-and-through-sleep?select=SaYoPillow.csv>
+and predicting how different indicators affect the quality of our sleep.
+
+#### Data overview
+
+```{r}
+pillow <- read.csv(file = 'C:/Users/baran/Desktop/data_for_research.csv')
+pillow
+```
+
+Dataset includes information about every participant and their sleep
+indicators: snoring rate, sleeping hour (\>= 2), heart rate, stress
+level. Our aim is to find how these indicators affect each other and
+whether there is a certain correlation or dependence between them.
