@@ -76,13 +76,6 @@ pillow$more <- pillow$sh > 5.0
 
 ```
 
-```{r}
-# ggplot(pillow,aes(x=sh,fill=factor(high)))+sl(alpha=0.5)+
-#  xlab(label = "Fixed Acidity Level")+
-#  ggtitle("Distribution of Fixed Acidity Levels")+
-#  theme_minimal()
-```
-
 Second hypothesis we test is\
 $$
 H_0: mean(\textrm{stress level of people sleeping less then 5 hours})  = \\=mean(\textrm{stress level of people sleeping more then 5 hours})
