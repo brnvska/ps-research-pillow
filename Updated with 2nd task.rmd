@@ -1,0 +1,130 @@
+---
+title: 'Probability and Statistics.'
+authors: Hrebeniuk Dmytro ,Baranovska Tetiana, Lakoma Nadiia
+output:
+  html_document:
+    df_print: paged
+editor_options:
+  markdown:
+    wrap: 72
+---
+
+### Student\`s research "Human Stress Detection in and through Sleep by monitoring physiological data."
+
+Analysing data from
+<https://www.kaggle.com/datasets/laavanya/human-stress-detection-in-and-through-sleep?select=SaYoPillow.csv>
+and predicting how different indicators affect the quality of our sleep.
+
+#### Data overview:
+
+Dataset includes information about every participant and their sleep
+indicators: snoring rate, sleeping hour (\>= 2), heart rate, stress
+level. Our aim is to find how these indicators affect each other and
+whether there is a certain correlation or dependence between them.
+
+sr - snoring rate
+
+sh - hours of sleep
+
+hr - heart rate
+
+sl - stress level (0-4)
+
+```{r}
+pillow <- read.csv(file = 'C:/Users/baran/Desktop/data_for_research.csv')
+pillow
+```
+
+```{r}
+
+plotting <- function(cur_dat, bin, label){
+  xrange = c(min(cur_dat),max(cur_dat))
+  hist(cur_dat,
+       probability = T, 
+       breaks = bin, 
+       xlim = xrange,
+       main = label,
+       col = "lightblue");
+  lines(density(cur_dat),xlim=xrange, col = "blue")
+  x <- seq(min(cur_dat),max(cur_dat), by=.01)
+}
+
+```
+
+```{r}
+plotting(pillow$sr, 20, "Snorring rate")
+plotting(pillow$sh, 20, "Hours of sleep")
+plotting(pillow$hr, 20, "Heart rate")
+
+```
+
+As we can see, all outcomes are equally possible.
+
+```{r}
+linear_model <- lm(pillow$sr ~ pillow$hr)
+plot(pillow$sr, pillow$hr, pch=1, xlim=c(50,100), col = "blue")
+abline(linear_model, col = "purple")
+summary(linear_model)
+```
+
+Sleeping hours and stress level.\
+We cut all data where sleeping hours were less then 1 hour of seeping,
+becouse we assume that this data is mistakenly taken.
+
+```{r}
+pillow$more <- pillow$sh > 5.0
+
+```
+
+```{r}
+# ggplot(pillow,aes(x=sh,fill=factor(high)))+sl(alpha=0.5)+
+#  xlab(label = "Fixed Acidity Level")+
+#  ggtitle("Distribution of Fixed Acidity Levels")+
+#  theme_minimal()
+```
+
+Second hypothesis we test is\
+$$
+H_0: mean(\textrm{stress level of people sleeping less then 5 hours})  = \\=mean(\textrm{stress level of people sleeping more then 5 hours})
+$$ $$
+H_1:  mean(\textrm{stress level of people sleeping less then 5 hours})  >\\> mean(\textrm{stress level of people sleeping more then 5 hours})
+$$
+
+We used $t-test$ because the variance is unknown
+
+1)  Extract our data
+
+```{r}
+more_sleeping <- c()
+less_sleeping <- c()
+
+for (i in 1:length(pillow$sh)){
+
+  if (pillow$sh[i] > 5.0){
+      more_sleeping <- append(more_sleeping, pillow$sl[i])
+  }
+  else {
+     less_sleeping <- append(less_sleeping, pillow$sl[i])
+  }
+}
+```
+
+2)  hist to enforce our assumption
+
+```{r}
+hist(more_sleeping, breaks = 4)
+hist(less_sleeping, breaks = 4)
+```
+
+We enforced our assumption that people who sleep longer have lower level
+of stress
+
+3)  $T-test$
+
+```{r}
+#?t.test
+t.test(more_sleeping, less_sleeping, alternative = "greater")
+```
+
+We will not reject our $H_0$ hypothesis because our $p-value$ is
+$\approx0.73$
